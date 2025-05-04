@@ -1,0 +1,47 @@
+---
+title: Birds over time
+format: 
+  closeread-html:
+    theme: lux #cosmo flatly lumen
+    #remove-header-space: true
+    cr-style:
+      narrative-background-color-sidebar: pink
+    cr-section:
+      layout: "sidebar-left"
+      
+---
+
+
+:::{.cr-section}
+
+:::{.introduction1}
+# Introduction
+
+This project explores the trends and patterns of rare and threatened bird species in Denmark from 1998 to 2024. Using comprehensive datasets, we aim to analyze population changes, identify key threats, and highlight conservation efforts. The findings will provide valuable insights into the state of avian biodiversity in Denmark.
+
+Credits to the amazing team of researchers, data analysts, and conservationists who made this project possible. Special thanks to the fictional Birdwatchers Association of Denmark for their invaluable support and data contributions.
+:::
+
+
+Draw your readers attention with focus effects. @cr-features
+
+Once upon a time she was happy
+
+Now she was just happier
+
+The end of the first two lines of a Limerick must rhyme. [@cr-limerick]{highlight="cr-mallory,cr-salary"}
+
+| {#cr-limerick}
+| There was a young rustic named [Mallory]{#cr-mallory},
+| who drew but a very small [salary]{#cr-salary}.
+|   When he went to the show,
+|   his purse made him go
+| to a seat in the uppermost gallery.
+
+:::{#cr-features}
+1. Highlighting
+2. Zooming
+3. Panning
+:::
+
+:::
