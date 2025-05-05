@@ -1,0 +1,81 @@
+{
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "---\n",
+        "title: \"Birds Over Time\"\n",
+        "format:\n",
+        "  closeread-html:\n",
+        "    theme: lux\n",
+        "    cr-style:\n",
+        "      narrative-background-color-sidebar: \"#f8f9fa\"\n",
+        "    cr-section:\n",
+        "      layout: \"sidebar-left\"\n",
+        "execute:\n",
+        "  echo: false\n",
+        "  warning: false\n",
+        "  message: false\n",
+        "jupyter: python3\n",
+        "---\n",
+        "\n",
+        "# Setup code (hidden)"
+      ],
+      "id": "788eba10"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "# Import your libraries\n",
+        "import pandas as pd\n",
+        "import matplotlib.pyplot as plt\n",
+        "import plotly.express as px\n",
+        "from bokeh.plotting import figure, show, output_notebook\n",
+        "output_notebook()\n",
+        "\n",
+        "# Load your data\n",
+        "df = pd.read_csv(\"your-bird-dataset.csv\")"
+      ],
+      "id": "5e1f478b",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        ":::{.cr-section}\n",
+        "\n",
+        ":::{.introduction1}\n",
+        "\n",
+        "Step 1: Introduction\n",
+        "\n",
+        "This project explores the trends and patterns of rare and threatened bird species in Denmark from 1998 to 2024. The goal is to raise awareness about biodiversity changes and spotlight individual conservation stories.\n",
+        "\n",
+        "Credits to the amazing team of researchers, data analysts, and conservationists. Special thanks to the (fictional) Birdwatchers Association of Denmark for their support.\n",
+        ":::\n",
+        "\n",
+        ":::{.step2}\n",
+        "\n",
+        "Step 2: Overall Findings\n",
+        "\n",
+        "Here, introduce the major insight—e.g., overall population trends, increased sightings, or areas of concern.\n",
+        "\n",
+        "``{}"
+      ],
+      "id": "60317de1"
+    }
+  ],
+  "metadata": {
+    "kernelspec": {
+      "name": "python3",
+      "language": "python",
+      "display_name": "Python 3 (ipykernel)",
+      "path": "/Users/rakul/miniconda3/envs/sd-quarto/share/jupyter/kernels/python3"
+    }
+  },
+  "nbformat": 4,
+  "nbformat_minor": 5
+}
