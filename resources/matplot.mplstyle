@@ -2,7 +2,7 @@
 font.family         : serif
 
 # Title settings
-axes.titlesize      : 16
+axes.titlesize      : 20
 axes.titlecolor     : 383d3d
 
 # Axis label settings

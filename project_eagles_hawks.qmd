@@ -1,6 +1,6 @@
 ---
 title: "Hawks and Eagles in Denmark"
-subtitle: "An insight to their habitat and what effect conservation efforts have"
+subtitle: "An insight to their habitat and what effects conservation efforts have"
 author: "Rakul Maria Hjalmarsdóttir Tórgarð"
 format:
   revealjs:
@@ -121,8 +121,8 @@ The following project was developed as a part of the final exam in the course [S
 
 ## Introduction
 
-The [Danish Ornithology Community](https://www.dof.dk/om-dof) (Dansk Ornitologisk Forening, or DOF) was founded in 1906, with the goal of protecting birds and their habitats in Denmark. Over the years, DOF has played a crucial role in bird conservation efforts, including monitoring bird populations, advocating for environmental policies, and raising public awareness about the importance of biodiversity. Their work has been instrumental in understanding the trends and challenges faced by bird species in Denmark. 
-DOF's current visions are primarily to protect wild birdlife in Denmark and improve their habitat, and to collect and inform knowledge of birds to the people. 
+The [Danish Ornithology Community](https://www.dof.dk/om-dof) (Dansk Ornitologisk Forening, or DOF) was founded in 1906, with the goal of protecting birds and their habitats in Denmark. Over the years, DOF has played a crucial role in bird conservation efforts, including monitoring bird populations, advocating for environmental policies, and raising public awareness about the importance of biodiversity. Their work has been fundamental in understanding the trends and challenges faced by bird species in Denmark. 
+DOF's vision is primarily to protect wild birdlife in Denmark and improve their habitat, and to collect and inform knowledge of birds to the people. 
 
 ::: {.fragment .fade-in}
 One of the major things that DOF has done, is to allow people to register their own observations of birds via their website, [DOFBasen.dk](https://dofbasen.dk/observationer/). 
@@ -164,11 +164,11 @@ The dataset used in the following sections contains all observation registered o
 
 ## But what do these birds look like? {auto-animate=true}
 
-Before diving into each bird specie, let's first take a look at each bird, to gain a better understanding of what we're about to inspect.
+Before diving into each bird species, let's first take a look at each bird, to gain a better understanding of what we're about to inspect.
 
 ## But what do these birds look like? {auto-animate=true}
 
-Before diving into each bird specie, let's first take a look at each bird, to gain a better understanding of what we're about to inspect.
+Before diving into each bird species, let's first take a look at each bird, to gain a better understanding of what we're about to inspect.
 
 :::: {.columns}
 
@@ -194,7 +194,7 @@ Before diving into each bird specie, let's first take a look at each bird, to ga
 
 ## But what do these birds look like? {auto-animate=true}
 
-Before diving into each bird specie, let's first take a look at each bird, to gain a better understanding of what we're about to inspect.
+Before diving into each bird species, let's first take a look at each bird, to gain a better understanding of what we're about to inspect.
 
 :::: {.columns}
 
@@ -219,7 +219,7 @@ Before diving into each bird specie, let's first take a look at each bird, to ga
 
 ## But what do these birds look like? {auto-animate=true}
 
-Before diving into each bird specie, let's first take a look at each bird, to gain a better understanding of what we're about to inspect.
+Before diving into each bird species, let's first take a look at each bird, to gain a better understanding of what we're about to inspect.
 
 :::: {.columns}
 
@@ -244,7 +244,7 @@ Before diving into each bird specie, let's first take a look at each bird, to ga
 
 ## But what do these birds look like? {auto-animate=true}
 
-Before diving into each bird specie, let's first take a look at each bird, to gain a better understanding of what we're about to inspect.
+Before diving into each bird species, let's first take a look at each bird, to gain a better understanding of what we're about to inspect.
 
 :::: {.columns}
 
@@ -269,7 +269,7 @@ Before diving into each bird specie, let's first take a look at each bird, to ga
 
 ## Overall development
 
-If we look at the overall development of these birds over time, it is clear that there has been one specie who has shown remarkable success in expanding their population from 1998 - 2024; the white-tailed eagle.
+If we look at the overall development of these birds over time, it is clear that there has been one species who has shown remarkable success in expanding their population from 1998 - 2024; the white-tailed eagle.
 
 ```{python}
 df_yearly = df_focus.groupby(["year", "commonName"]).size().unstack()
@@ -319,7 +319,7 @@ Inspired by similar projects run in Sweden and Germany, DOF initiated [Project E
 The project achieved to promote a positive attitude among Danes towards the eagles, which established themselves in Denmark from 1995 onwards.
 The first succesfull breeding attempt occoured in 1996 @ehmsen2011occurrence.
 
-Although the specie had a smaller drawback around the turn of the century, the overall development of the species has been upward.
+Although the species had a smaller drawback around the turn of the century, the overall development of the species has been upward.
 
 ```{python}
 
@@ -423,7 +423,7 @@ fig.show()
 
 Thanks to DOF's initiatives taken in [Project Eagle](https://www.dof.dk/naturbeskyttelse/arter/orne), which were implemented around the same time and in similar ways to conservation efforts in neighbouring countries such as Germany and Sweden, this ultimately contributed to the species' successful recovery @web:dof-havorn-old.
 
-Today the White-tailed eagle is on the Dansih Redlist, marked in the category NT, Near Threathened @web:danske-rodliste. There are 151 active breeding pairs @web:dof-havorn-new.
+Today the White-tailed eagle is on the Danish Redlist, marked in the category NT, Near Threathened @web:danske-rodliste. There are 151 active breeding pairs @web:dof-havorn-new.
 
 :::
 
@@ -438,7 +438,7 @@ Today the White-tailed eagle is on the Dansih Redlist, marked in the category NT
 ## Project Montagu's harrier
 
 The Montagu's harrier is a relatively new bird in Denmark.
-Unlikely the White-tailed eagle, which resides in Denmark year-round, the Montagu's harrier is a breeding bird.
+Unlike the White-tailed eagle, which resides in Denmark year-round, the Montagu's harrier is a breeding bird.
 This means that the bird only visits Denmark for its breeding season, which is from spring to late summer.
 
 ```{python}
@@ -466,13 +466,13 @@ p.legend.click_policy='mute'
 p.legend.title = "Selected specie"
 
 # Add vbars for each crime category
-for specie, color in zip(unique_species, Spectral10):
+for species, color in zip(unique_species, Spectral10):
     # Set initial visibility
-    is_visible = specie in ["Montagu's harrier", "White-tailed eagle"]
+    is_visible = species in ["Montagu's harrier", "White-tailed eagle"]
     
-    p.vbar(x='month', top=specie, width=0.8, source=source,
+    p.vbar(x='month', top=species, width=0.8, source=source,
            color=color,
-           legend_label=specie,
+           legend_label=species,
            alpha=0.6,
            muted=not is_visible,
            muted_alpha=0,
