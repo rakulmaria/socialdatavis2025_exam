@@ -10,6 +10,7 @@ format:
     progress: true
     toc: false
     transition: slide
+    transition-speed: slow
     navigation-mode: linear
     center-title-slide: true
     incremental: true   
@@ -123,10 +124,10 @@ The following project was developed as a part of the final exam in the course [S
 The [Danish Ornithology Community](https://www.dof.dk/om-dof) (Dansk Ornitologisk Forening, or DOF) was founded in 1906, with the goal of protecting birds and their habitats in Denmark. Over the years, DOF has played a crucial role in bird conservation efforts, including monitoring bird populations, advocating for environmental policies, and raising public awareness about the importance of biodiversity. Their work has been instrumental in understanding the trends and challenges faced by bird species in Denmark. 
 DOF's current visions are primarily to protect wild birdlife in Denmark and improve their habitat, and to collect and inform knowledge of birds to the people. 
 
-. . .
-
+::: {.fragment .fade-in}
 One of the major things that DOF has done, is to allow people to register their own observations of birds via their website, [DOFBasen.dk](https://dofbasen.dk/observationer/). 
 This has had a huge impact on spreading the knowledge of bird species and their habitats across Denmark. By enabling citizens and volunteers to contribute their observations, DOF has created a rich dataset that provides valuable insights into bird populations and their trends over time. 
+:::
 
 ## Project Eagle and Project Montagu's harrier
 
@@ -138,7 +139,7 @@ The following sections will take a closer look at what impact these projects hav
 ::: {.column width=50%}
 
 ::: {.fragment .fade-in}
-**From Project Eagle:**
+#### From Project Eagle:
 :::
 
 - The white-tailed eagle  
@@ -149,7 +150,7 @@ The following sections will take a closer look at what impact these projects hav
 ::: {.column width=50%}
 
 ::: {.fragment .fade-in}
-**From Project Montagu's Harrier:**
+#### From Project Montagu's Harrier:
 :::
 
 - The Montagu's Harrier (surprise!)
@@ -173,12 +174,12 @@ Before diving into each bird specie, let's first take a look at each bird, to ga
 
 ::: {.column width="70%"}
 
-**White-tailed eagle**
+#### White-tailed eagle
 
 ::: {.nonincremental}
 - The largest eagle in Denmark (And the whole of Europe!), with an average wing-span of 200-245 cm
 - Greyish mid-brown colour overall, with a beak that goes from brown'ish to yellow as the bird ages
-<!-- - A predator that mainly lives off other smaller birds and fish -->
+
 :::
 
 :::
@@ -199,7 +200,7 @@ Before diving into each bird specie, let's first take a look at each bird, to ga
 
 ::: {.column width="70%"}
 
-**Golden eagle**
+#### Golden eagle
 
 ::: {.nonincremental}
 - The second-largest eagle in Denmark, with an average wing-span of 190-227 cm
@@ -224,7 +225,7 @@ Before diving into each bird specie, let's first take a look at each bird, to ga
 
 ::: {.column width="70%"}
 
-**Osprey**
+#### Osprey
 
 ::: {.nonincremental}
 - Quite characteristic with a white/grey underpart and brown upperpart
@@ -249,7 +250,7 @@ Before diving into each bird specie, let's first take a look at each bird, to ga
 
 ::: {.column width="70%"}
 
-**Montagu's Harrier**
+#### Montagu's Harrier
 
 ::: {.nonincremental}
 - Small bird of prey, with an average wing-span of 98-110 cm
@@ -299,7 +300,9 @@ The white-tailed eagle bred in Denmark until it was driven by extinct by persecu
 After this it made a number of breeding attempts during the second half of the 20th century, unfortunately usually unsuccessful.
 It was clear that some action had to be taken, in order to reestablish the White-tailed eagle.
 
+::: {.fragment }
 Inspired by similar projects run in Sweden and Germany, DOF initiated [Project Eagle](https://www.dof.dk/naturbeskyttelse/arter/orne) in 1991, hoping that this might ultimately lead to reestablishment of the population @ehmsen2011occurrence.
+:::
 
 :::
 
@@ -547,7 +550,7 @@ To help protect the Montagu's harrier, DOF launched [Project Montagu's harrier](
 Since then, DOF has stepped in every year during the breeding season.
 When a nest is discovered on private land, volunteers and researchers work closely with the local landowners, informing them about the birds and encouraging their support in safeguarding the nest. 
 Most often, this involves setting up a small protective fence around the site. 
-These fences not only help keep predators away, but also make it easier for farmers to manage their harvest around the nests without disturbing the birds @web:dof-projekt-hedehøg.
+These fences not only help keep predators away, but also make it easier for farmers to manage their harvest around the nests without disturbing the birds @web:dof-projekt-hedehøg. The video below, which us published by DOF, explains more about the project.
 
 {{< video https://youtu.be/xKiNhhnXRBg?si=4wzcvDfNeLU3Zwa8&t=386 width="50%" height="35%" >}}
 
@@ -656,9 +659,21 @@ fig.show()
 
 ## Conclusion
 
+:::: {.columns}
+::: {.column}
+
 The Montagu's harrier is listed under Annex I of the [EU Birds Directive](https://environment.ec.europa.eu/topics/nature-and-biodiversity/birds-directive_en), which means that all countries where the species occurs are legally obligated to protect the species and its habitats. 
 
-In Denmark the species is listed as Endangered (EN) @web:naturbasen-hedehøg, a status it has held since Denmark began applying the IUCN’s international Red List categories and criteria with the 2010 Red List @web:aau-rodliste.
+In Denmark the species is listed as Endangered (EN) @web:naturbasen-hedehøg, a status it has held since Denmark in 2010 began applying the IUCN’s international Red List categories and criteria @web:aau-rodliste.
 This highlights the importance of the conservation efforts carried out by DOF and supported by local communities. 
+
+:::
+
+::: {.column}
+
+<img src="resources/bird_images/montagu's_harrier_f.png" alt="Montagus harrier"/>
+
+:::
+::::
 
 ## References
