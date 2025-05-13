@@ -1,5 +1,7 @@
-# socialdatavis2025_exam
+# [Social data analysis and visualization](https://kurser.dtu.dk/course/2024-2025/02806) - Final exam project
 
-## Closeread
+> By Rakul Maria Hjalmarsdóttir Tórgarð
 
-[Documentation](https://closeread.dev/guide/styling.html)
+The following project was developed as a part of the final exam in the course [Social data analysis and visualization](https://kurser.dtu.dk/course/2024-2025/02806) taught at DTU in spring 2025.
+
+[The explainer notebook can be found here.]()
