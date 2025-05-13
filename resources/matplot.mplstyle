@@ -1,0 +1,26 @@
+# Font settings
+font.family         : serif
+
+# Title settings
+axes.titlesize      : 16
+axes.titlecolor     : 383d3d
+
+# Axis label settings
+axes.labelcolor     : 383d3d
+
+# Tick settings
+xtick.color         : 383d3d
+ytick.color         : 383d3d
+xtick.labelsize     : 10
+ytick.labelsize     : 10
+
+# General text color
+text.color          : 383d3d
+
+# Axis edge color (borders)
+axes.edgecolor      : 383d3d
+
+# Background colors
+figure.facecolor    : f0f1eb       # Overall figure background
+axes.facecolor      : f0f1eb       # Background inside axes (plot area)
+savefig.facecolor   : f0f1eb       # Background color for saved figures

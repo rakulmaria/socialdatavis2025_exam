@@ -1,0 +1,664 @@
+---
+title: "Hawks and Eagles in Denmark"
+subtitle: "An insight to their habitat and how we can impact their thrivings"
+author: "Rakul Maria Hjalmarsdóttir Tórgarð"
+format:
+  revealjs:
+    theme: serif
+    smaller: true
+    slide-number: true
+    progress: true
+    toc: false
+    transition: slide
+    navigation-mode: linear
+    center-title-slide: true
+    incremental: true   
+jupyter: python3 
+bibliography: resources/references.bib
+csl: resources/diabetologia.csl
+---
+
+```{python}
+import pandas as pd
+import matplotlib.pyplot as plt
+
+import plotly.express as px
+import plotly.graph_objects as go
+import plotly.io as pio
+
+from scipy.ndimage import gaussian_filter1d 
+
+from bokeh.io import show, output_notebook
+from bokeh.plotting import figure
+from bokeh.models import ColumnDataSource, Legend, FixedTicker
+from bokeh.palettes import Spectral10
+
+# relevant columns
+cols_to_keep = [
+    'family',
+    'genus',
+    'species',
+    'locality',
+    'decimalLatitude',
+    'decimalLongitude',
+    'eventDate',
+    'month',
+    'year'
+]
+
+df = pd.read_csv('./resources/DOF-observations-threathened-and-rare-species-1998-2025.csv', usecols=cols_to_keep, sep='\t', on_bad_lines='skip')
+# remove 2025, as the year is not completed yet
+df = df[df['year'] != 2025]
+
+species_to_keep = set([
+    "Circus pygargus",
+    "Aquila chrysaetos",
+    "Haliaeetus albicilla",
+    "Pandion haliaetus"
+])
+
+df_focus = df[df['species'].isin(species_to_keep)]
+
+# translate from latin name to common name
+species_to_commonname = {
+    'Circus pygargus': "Montagu's harrier",
+    'Aquila chrysaetos': 'Golden eagle',
+    'Haliaeetus albicilla': 'White-tailed eagle',
+    'Pandion haliaetus': 'Osprey'
+}
+
+# add the column
+df_focus['commonName'] = df_focus['species'].map(species_to_commonname).fillna('Unknown species')
+
+# --- THEMES ---
+
+# matplot themes
+plt.style.use('resources/matplot.mplstyle') 
+
+# plotly theme
+custom_template = pio.templates["simple_white"]  # start from a base template
+
+# customize it
+custom_template.layout.font.family = "Serif"
+custom_template.layout.font.color = "#383d3d"
+custom_template.layout.title.font.size = 18
+custom_template.layout.title.font.family = "Serif"
+custom_template.layout.title.font.color = "#383d3d"
+custom_template.layout.title.x = 0.5
+
+# bg color
+custom_template.layout.plot_bgcolor = "#f0f1eb"
+custom_template.layout.paper_bgcolor = "#f0f1eb"
+
+# color sequence for plots and lines
+custom_template.layout.colorway = ["lightcoral", "brown"]
+
+# force specific types to have color regardless of series order
+custom_template.data.bar = [dict(marker_color="lightcoral")]
+custom_template.data.scatter = [dict(line=dict(color="brown"))]  # For lines
+
+# Hover label (tooltip) styling
+custom_template.layout.hoverlabel = dict(
+    bgcolor="rgba(211, 211, 211, 0.7)",  # Light gray with 70% opacity
+    font=dict(
+        family="Serif",                 # Match plot font
+        color="#383d3d"                 # Consistent dark text
+    ),
+    bordercolor="#383d3d"               # Optional: border for visual clarity
+)
+
+# Register and set as default
+pio.templates["custom_serif"] = custom_template
+pio.templates.default = "custom_serif"
+```
+
+## Disclaimer
+
+The following project was developed as a part of the final exam in the course [Social data analysis and visualization](https://kurser.dtu.dk/course/2024-2025/02806) taught at DTU in spring 2025.
+
+[The explainer notebook can be found here.]()
+
+## Introduction
+
+The [Danish Ornithology Community](https://www.dof.dk/om-dof) (Dansk Ornitologisk Forening, or DOF) was founded in 1906, with the goal of protecting birds and their habitats in Denmark. Over the years, DOF has played a crucial role in bird conservation efforts, including monitoring bird populations, advocating for environmental policies, and raising public awareness about the importance of biodiversity. Their work has been instrumental in understanding the trends and challenges faced by bird species in Denmark. 
+DOF's current visions are primarily to protect wild birdlife in Denmark and improve their habitat, and to collect and inform knowledge of birds to the people. 
+
+. . .
+
+One of the major things that DOF has done, is to allow people to register their own observations of birds via their website, [DOFBasen.dk](https://dofbasen.dk/observationer/). 
+This has had a huge impact on spreading the knowledge of bird species and their habitats across Denmark. By enabling citizens and volunteers to contribute their observations, DOF has created a rich dataset that provides valuable insights into bird populations and their trends over time. 
+
+## Project Eagle and Project Montagu's harrier
+
+In extension to their work on bird conservation, DOF has for the past couple of years worked with various focus projects, two of them being [Project Eagle](https://www.dof.dk/naturbeskyttelse/arter/orne) and [Project Montagu's Harrier](https://www.dof.dk/naturbeskyttelse/arter/projekter-om-hedehogen).
+The following sections will take a closer look at what impact these projects have had on the population of the bird species in these projects. The birds inspected in this sections are
+
+:::: {.columns}
+
+::: {.column width=50%}
+
+::: {.fragment .fade-in}
+**From Project Eagle:**
+:::
+
+- The white-tailed eagle  
+- The golden eagle  
+- The osprey  
+:::
+
+::: {.column width=50%}
+
+::: {.fragment .fade-in}
+**From Project Montagu's Harrier:**
+:::
+
+- The Montagu's Harrier (surprise!)
+:::
+
+::::
+
+. . .
+
+The dataset used in the following sections is a dataset of every observation registered on [DOFBasen.dk](https://dofbasen.dk/observationer/) from 1998 - 2024 of these species.
+
+## But what do these birds look like? {auto-animate=true}
+
+Before diving into each bird specie, let's first take a look at each bird, to gain a better understanding of what we're about to inspect.
+
+## But what do these birds look like? {auto-animate=true}
+
+Before diving into each bird specie, let's first take a look at each bird, to gain a better understanding of what we're about to inspect.
+
+:::: {.columns}
+
+::: {.column width="70%"}
+
+**White-tailed eagle**
+
+::: {.nonincremental}
+- The largest eagle in Denmark (And the whole of Europe!), with an average wing-span of 200-245 cm
+- Greyish mid-brown colour overall, with a beak that goes from brown'ish to yellow as the bird ages
+<!-- - A predator that mainly lives off other smaller birds and fish -->
+:::
+
+:::
+
+::: {.column width="30%"}
+
+<img src="resources/bird_images/white-tailed_eagle.png" alt="White-tailed eagle"/>
+
+:::
+
+::::
+
+## But what do these birds look like? {auto-animate=true}
+
+Before diving into each bird specie, let's first take a look at each bird, to gain a better understanding of what we're about to inspect.
+
+:::: {.columns}
+
+::: {.column width="70%"}
+
+**Golden eagle**
+
+::: {.nonincremental}
+- The second-largest eagle in Denmark, with an average wing-span of 190-227 cm
+- Primarily lives off smaller birds and other mammals, such as mice
+:::
+
+:::
+
+::: {.column width="30%"}
+
+<img src="resources/bird_images/golden_eagle.png" alt="Golden eagle"/>
+
+:::
+
+::::
+
+## But what do these birds look like? {auto-animate=true}
+
+Before diving into each bird specie, let's first take a look at each bird, to gain a better understanding of what we're about to inspect.
+
+:::: {.columns}
+
+::: {.column width="70%"}
+
+**Osprey**
+
+::: {.nonincremental}
+- Quite characteristic with a white/grey underpart and brown upperpart
+- Primarily lives off fish, which is why it's also known as the Sea Hawk
+:::
+
+:::
+
+::: {.column width="30%"}
+
+<img src="resources/bird_images/osprey.png" alt="Osprey"/>
+
+:::
+
+:::: 
+
+## But what do these birds look like? {auto-animate=true}
+
+Before diving into each bird specie, let's first take a look at each bird, to gain a better understanding of what we're about to inspect.
+
+:::: {.columns}
+
+::: {.column width="70%"}
+
+**Montagu's Harrier**
+
+::: {.nonincremental}
+- Small bird of prey, with an average wing-span of 98-110 cm
+- A quite rare migratory bird, which visits Denmark in summertime
+:::
+
+:::
+
+::: {.column width="30%"}
+
+<img src="resources/bird_images/montagu's_harrier.png" alt="Montagu's harrier"/>
+
+:::
+
+:::: 
+
+## Overall development
+
+If we look at the overall development of these birds over time, it is clear that there has been one specie who has shown remarkable success in expanding their population from 1998 - 2024; the white-tailed eagle.
+
+```{python}
+df_yearly = df_focus.groupby(["year", "commonName"]).size().unstack()
+
+# custom defined colors
+cmap = plt.get_cmap('Set2', len(df_yearly.columns))
+custom_colors = [cmap(i) for i in range(cmap.N)]
+
+
+df_yearly.plot(kind='bar', stacked=True, figsize=(14,7), color=custom_colors[:len(df_yearly.columns)])  # Apply colors to match number of families)
+
+plt.xlabel('Year')  # X-axis label
+plt.ylabel('Count of Occurrences')  # Y-axis label
+plt.title('Observation count, stacked based on each bird specie\n1998 - 2024')  # Plot title
+plt.legend(title='Specie')  # Legend title
+plt.tight_layout()  # Adjust layout to avoid clipping
+
+plt.show()
+```
+
+## Recovering from extinction
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+The white-tailed eagle bred in Denmark until it was driven by extinct by persecution in 1912.
+After this it made a number of breeding attempts during the second half of the 20th century, unfortunately usually unsuccessful.
+It was clear that some action had to be taken, in order to reestablish the White-tailed eagle.
+
+Inspired by similar projects run in Sweden and Germany, DOF initiated [Project Eagle](https://www.dof.dk/naturbeskyttelse/arter/orne) in 1991, hoping that this might ultimately lead to reestablishment of the population @ehmsen2011occurrence.
+
+:::
+
+::: {.column width="50%"}
+
+<img src="resources/bird_images/white-tailed_eagle2.png" alt="White-tailed eagle"/>
+
+:::
+
+::::
+
+## Conservation efforts and their positive effect
+
+The project achieved to promote a positive attitude among Danes towards the eagles, which established themselves in Denmark from 1995 onwards.
+The first succesfull breeding attempt occoured in 1996 @ehmsen2011occurrence.
+
+Although the specie had a smaller drawback around the turn of the century, the overall development of the species has been upward.
+
+```{python}
+
+# data preparation
+df_white_tailed_eagle = df_focus[df_focus['commonName'] == 'White-tailed eagle']
+df_grouped = df_white_tailed_eagle.groupby(['year']).size().reset_index(name="count")
+df_filtered = df_grouped[df_grouped['year'] <= 2008]
+df_filtered
+
+fig = px.bar(df_filtered, x='year', y='count', labels={'count': 'Observations', 'year': 'Year'},
+             title=f"Observations of the White-Tailed Eagle in Denmark (1998–2008)", width=800, height=300)
+
+# use gaussian filter to smoothen the counts
+smoothed_counts = gaussian_filter1d(df_filtered['count'], sigma=1.5)
+
+# and add the line
+fig.add_trace(go.Scatter(
+    x=df_filtered['year'],
+    y=smoothed_counts,
+    mode='lines',
+    name='Trend over time (Using Gaussian Filter)',
+    hoverinfo='skip'
+))
+
+fig.update_layout(
+    xaxis=dict(dtick=1),
+    yaxis_title='Count of Observations',
+    xaxis_title='Year',
+    legend=dict(
+        yanchor="top",
+        y=0.99,
+        xanchor="left",
+        x=0.01
+    )
+)
+
+fig.show()
+```
+
+## Registered observations
+
+:::: {.columns}
+
+::: {.column width="35%"}
+With this successfull breeding attempt in 1996, an increase in the species population began to take effect.
+
+The map on the right illustrates the development over time of the White-tailed eagle in Denmark. Initially a rare species, limited to a few specific regions, the White-tailed eagle has expanded significantly and is now widespread across the Danish landscape.
+:::
+
+::: {.column width="65%"}
+```{python}
+
+df_white_tailed_eagle = df_focus.groupby(
+    ["decimalLatitude", "decimalLongitude", "year", "locality"]
+).size().reset_index(name="observation_count")
+
+df_white_tailed_eagle = df_white_tailed_eagle.sort_values(by="year")
+
+# create the text for the hover element
+df_white_tailed_eagle["hover_text"] = (
+    "Year: " + df_white_tailed_eagle["year"].astype(str) +
+    "<br>Observations: " + df_white_tailed_eagle["observation_count"].astype(str) +
+    "<br>Location: " + df_white_tailed_eagle["locality"].astype(str)
+)
+# Create the animated scatter map
+fig = px.scatter_map(
+    df_white_tailed_eagle,
+    lat="decimalLatitude",
+    lon="decimalLongitude",
+    size="observation_count",
+    hover_name="hover_text",  # Use your custom string here
+    hover_data={
+        "year": False,
+        "decimalLatitude": False,
+        "decimalLongitude": False,
+        "observation_count": False
+    },
+    color_discrete_sequence=["lightcoral"],  # set point color
+    animation_frame="year",  # animate by year
+    zoom=5.5,  # suitable zoom for Denmark
+    center={"lat": 56.1, "lon": 11.0},  # center map on Denmark
+    height=600,  # figure height
+    width=600,
+    map_style="carto-positron",
+)
+fig.update_layout(paper_bgcolor="#f0f1eb")
+# Show the interactive map
+fig.show()
+
+```
+
+:::
+
+::::
+
+## Conclusion
+
+:::: {.columns}
+
+::: {.column width="40%"}
+
+Thanks to DOF's initiatives taken in [Project Eagle](https://www.dof.dk/naturbeskyttelse/arter/orne), which were implemented around the same time and in similar ways to conservation efforts in neighbouring countries such as Germany and Sweden, this ultimately contributed to the species' successful recovery @web:dof-havorn-old.
+
+Today the White-tailed eagle is on the Dansih Redlist, marked in the category NT, Near Threathened @web:danske-rodliste. There are 151 active breeding pairs @web:dof-havorn-new.
+
+:::
+
+::: {.column width="60%"}
+
+<img src="resources/bird_images/white-tailed_eagle-young.png" alt="White-tailed eagle (young)"/>
+
+:::
+
+::::
+
+## Project Montagu's harrier
+
+The Montagu's harrier is a relatively new bird in Denmark.
+Unlikely the White-tailed eagle, which resides in Denmark year-round, the Montagu's harrier is a breeding bird.
+This means that the bird only visits Denmark for its breeding season, which is from spring to late summer.
+
+```{python}
+
+# Normalize each column (divide by column sum)
+df_grouped = df_focus.groupby(['month', 'commonName']).size().unstack().fillna(0.0)
+# # from chatGPT - really helpful!
+df_normalized = df_grouped.div(df_grouped.sum(), axis=1)
+
+source = ColumnDataSource(df_normalized)
+
+months = df_normalized.index.astype(str).tolist()  # Convert hours to strings
+unique_species = list(df_normalized.columns)  # exclude hours to get all focus crimes
+
+
+p = figure(height=350,
+           width=800,
+           title="Monthly patterns of eagles and harrier",
+           x_axis_type="linear",
+           toolbar_location=None, tools="")
+
+# adding legend before adds it "outside" the figure, and then appending to legend_labels will set set these values inside the group
+p.add_layout(Legend(), 'right')
+p.legend.click_policy='mute'
+p.legend.title = "Selected specie"
+
+# Add vbars for each crime category
+for specie, color in zip(unique_species, Spectral10):
+    # Set initial visibility
+    is_visible = specie in ["Montagu's harrier", "White-tailed eagle"]
+    
+    p.vbar(x='month', top=specie, width=0.8, source=source,
+           color=color,
+           legend_label=specie,
+           alpha=0.6,
+           muted=not is_visible,
+           muted_alpha=0,
+    )
+
+
+# styling
+p.border_fill_color = None  # Makes the border area transparent
+p.outline_line_color = None
+p.background_fill_color = None
+p.title.text_font = "Serif"
+p.title.align = "center"
+p.title.text_font_size = "18px"
+p.axis.axis_label_text_font = "Serif"
+p.axis.major_label_text_font = "Serif"
+p.legend.title_text_font = "Serif"
+p.legend.label_text_font = "Serif"
+p.legend.background_fill_alpha = 0.5
+p.y_range.start = 0
+p.xaxis.ticker = FixedTicker(ticks=list(range(1, 13)))
+# Use integer keys to match numpy.int64
+month_labels = {
+    1: 'Jan', 2: 'Feb', 3: 'Mar', 4: 'Apr', 
+    5: 'May', 6: 'Jun', 7: 'Jul', 8: 'Aug', 
+    9: 'Sep', 10: 'Oct', 11: 'Nov', 12: 'Dec'
+}
+p.xgrid.grid_line_color = None
+p.xaxis.axis_label = "Months"
+p.xaxis.major_label_orientation = 1.2 # for rotating
+p.xaxis.major_label_overrides = month_labels
+p.outline_line_color = None
+p.yaxis.axis_label = "(Normalized) Count of observations"
+
+output_notebook(hide_banner=True)
+show(p)
+```
+
+## History lessons
+
+:::: {.columns}
+
+::: {.column}
+
+The first appearance of the Montagu's harrier in Denmark dates back to the early 1900s.
+Over the following decades, its population grew significantly.
+By the 1940s and 1950s, there was an estimate of 350 to 400 breeding pairs in the country.
+However, since then the population has declined, and today there are only about 20-30 breeding pairs registered @web:fakta-om-hedehøgen.
+
+:::
+
+::: {.column}
+
+<img src="resources/bird_images/montagu's_harrier_onstick.png" alt="A montagu harrier on a stick"/>
+
+:::
+
+:::: 
+
+## A threathened life
+
+One of the primary reason for this decline is the substantial change in its habitat.
+The Montagu's harriers nested in natural wetlands such as swamps and moorlands.
+But as these habitats have been increasingly replaced by agricultural land -- especially corn and rapeseed fields -- the harriers have adapted by nesting in these cultivated areas.
+When the birds arrive in April, the fields appear to be suitable nesting sites, offering shelter and camouflage for their nests and chicks.
+
+. . .
+
+However, this adaptation has come with significant risks.
+The nests are vulnerable to both natural predators, such as foxes, and to human agricultural activity.
+When farmers harvest their corps later in the summer, the nests can be destroyed, putting the young birds in danger @web:kongeåstien-hedehøg.
+
+## DOF's effort
+
+To help protect the Montagu's harrier, DOF launched [Project Montagu's harrier](https://www.dof.dk/naturbeskyttelse/arter/projekter-om-hedehogen) in 1995 @web:dof-projekt-hedehøg.
+Since then, DOF has stepped in every year during the breeding season.
+When a nest is discovered on private land, volunteers and researchers work closely with the local landowners, informing them about the birds and encouraging their support in safeguarding the nest. 
+Most often, this involves setting up a small protective fence around the site. 
+These fences not only help keep predators away, but also make it easier for farmers to manage their harvest around the nests without disturbing the birds @web:dof-projekt-hedehøg.
+
+{{< video https://youtu.be/xKiNhhnXRBg?si=4wzcvDfNeLU3Zwa8&t=386 width="50%" height="35%" >}}
+
+## How has the effect been?
+
+Since the conservation project began in 1995, the population of the Montagu's Harrier has been steadily increasing.
+Despite this encouraging trend, the species is still listed as Endangered (EN) on the Danish Red List. This means that without ongoing protection efforts, the Montagu’s Harrier could face extinction in the near future @web:naturbasen-hedehøg.
+
+```{python}
+df_montagu = df_focus[df_focus['commonName'] == "Montagu's harrier"]
+df_grouped = df_montagu.groupby(['year']).size().reset_index(name="count")
+
+# Create bar chart
+fig = px.bar(df_grouped, x='year', y='count', labels={'count': 'Observations', 'year': 'Year'},
+             title=f"Montagu's harrier Observations (1998–2008)", width=1000, height=400)
+
+# Smooth the count values using a Gaussian filter
+smoothed_counts = gaussian_filter1d(df_grouped['count'], sigma=1.5)
+
+# Add smooth trend line to the bar chart
+fig.add_trace(go.Scatter(
+    x=df_grouped['year'],
+    y=smoothed_counts,
+    mode='lines',
+    name='Trend',
+    hoverinfo='skip'
+    #line=dict(color='lightcoral', width=2, dash='dash')  # Dotted red line for trend
+))
+
+# Update layout for better visuals
+fig.update_layout(
+    xaxis=dict(dtick=1),
+    yaxis_title='Count of Observations',
+    xaxis_title='Year',
+    legend=dict(
+        yanchor="top",
+        y=0.99,
+        xanchor="left",
+        x=0.01
+    )
+)
+
+# Show the figure
+fig.show()
+
+```
+
+## Registered observations
+
+:::: {.columns}
+::: {.column width="35%"}
+
+The Montagu's harrier is most commonly found in southwestern Jutland, particularly near the Wadden Sea. 
+This is because the species primarily inhabits central and southern Europe, making Denmark the northern edge of its breeding range @web:kongeåstien-hedehøg.
+
+Some of the observations are registered in Skagen, and especially since 2021, a lot of harriers have been observed in Borris Hede @web:borris-hede.
+
+:::
+
+::: {.column width="65%"}
+```{python}
+df_grouped = df_montagu.groupby(
+    ["decimalLatitude", "decimalLongitude", "year", "locality"]
+).size().reset_index(name="observation_count")
+
+df_grouped = df_grouped.sort_values(by="year")
+
+df_grouped["hover_text"] = (
+    "Year: " + df_grouped["year"].astype(str) +
+    "<br>Observations: " + df_grouped["observation_count"].astype(str) +
+    "<br>Location: " + df_grouped["locality"].astype(str)
+
+)
+
+# Create the animated scatter map
+fig = px.scatter_map(
+    df_grouped,
+    lat="decimalLatitude",
+    lon="decimalLongitude",
+    size="observation_count",
+    hover_name="hover_text",  # Use your custom string here
+    hover_data={
+        "year": False,
+        "decimalLatitude": False,
+        "decimalLongitude": False,
+        "observation_count": False
+    },
+    color_discrete_sequence=["lightcoral"],  # set point color
+    animation_frame="year",  # animate by year
+    zoom=5.5,  # suitable zoom for Denmark
+    center={"lat": 56.1, "lon": 11.0},  # center map on Denmark
+    height=600,  # figure height
+    width=600,
+    map_style="carto-positron",
+)
+
+# Use an open-source Mapbox style (no access token needed)
+fig.update_layout(paper_bgcolor="#f0f1eb")
+
+# Show the interactive map
+fig.show()
+```
+
+:::
+::::
+
+## Conclusion
+
+The Montagu's harrier is listed under Annex I of the [EU Birds Directive](https://environment.ec.europa.eu/topics/nature-and-biodiversity/birds-directive_en), which means that all countries where the species occurs are legally obligated to protect the species and its habitats. 
+
+In Denmark the species is listed as Endangered (EN) @web:naturbasen-hedehøg, a status it has held since Denmark began applying the IUCN’s international Red List categories and criteria with the 2010 Red List @web:aau-rodliste.
+This highlights the importance of the conservation efforts carried out by DOF and supported by local communities. 
+
+## References
