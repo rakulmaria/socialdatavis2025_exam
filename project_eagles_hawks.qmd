@@ -159,7 +159,7 @@ The following sections will take a closer look at what impact these projects hav
 
 . . .
 
-The dataset used in the following sections is a dataset of every observation registered on [DOFBasen.dk](https://dofbasen.dk/observationer/) from 1998 - 2024 of these species.
+The dataset used in the following sections contains all observation registered on [DOFBasen.dk](https://dofbasen.dk/observationer/) from 1998 - 2024 of these species @https://doi.org/10.15468/dl.afghc9.
 
 ## But what do these birds look like? {auto-animate=true}
 
